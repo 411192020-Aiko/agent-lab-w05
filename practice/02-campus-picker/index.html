@@ -2,34 +2,49 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <title>東華校園活動選擇器</title>
+  <title>東華校園活動選擇器 v2</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; background: #f5f5f5; }
-    .card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    button { padding: 8px 16px; background: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    body { font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #fafafa; }
+    .search-box { width: 100%; padding: 10px; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; }
+    .card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; border-left: 4px solid #0066cc; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .btn { padding: 8px 12px; margin-right: 5px; background: #eee; border: none; border-radius: 4px; cursor: pointer; }
+    .btn.active { background: #0066cc; color: white; }
   </style>
 </head>
 <body>
-  <h1>東華校園活動選擇器 (Campus Activity Picker)</h1>
-  <p>選擇你感興趣的活動分類：</p>
-  <button onclick="filterActivity('all')">全部活動</button>
-  <button onclick="filterActivity('academic')">學術講座</button>
-  <button onclick="filterActivity('club')">社團表演</button>
+  <h1>東華校園活動選擇器</h1>
+  <input type="text" id="search" class="search-box" placeholder="搜尋活動關鍵字..." onkeyup="filterActivities()">
+  
+  <div style="margin-bottom: 15px;">
+    <button class="btn active" onclick="setCategory('all', this)">全部</button>
+    <button class="btn" onclick="setCategory('academic', this)">學術</button>
+    <button class="btn" onclick="setCategory('club', this)">社團</button>
+  </div>
 
-  <div id="activity-list" style="margin-top: 20px;">
+  <div id="activity-list">
     <div class="card" data-category="academic"><h3>AI 探討工作坊</h3><p>地點：理工一館 / 時間：週三 14:00</p></div>
     <div class="card" data-category="club"><h3>吉他社成發</h3><p>地點：集賢館 / 時間：週五 18:30</p></div>
+    <div class="card" data-category="academic"><h3>Python Agent 實務</h3><p>地點：圖資大樓 / 時間：週四 10:00</p></div>
   </div>
 
   <script>
-    function filterActivity(category) {
+    let currentCategory = 'all';
+
+    function setCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterActivities();
+    }
+
+    function filterActivities() {
+      const query = document.getElementById('search').value.toLowerCase();
       const cards = document.querySelectorAll('.card');
       cards.forEach(card => {
-        if (category === 'all' || card.dataset.category === category) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
+        const text = card.innerText.toLowerCase();
+        const matchCat = (currentCategory === 'all' || card.dataset.category === currentCategory);
+        const matchSearch = text.includes(query);
+        card.style.display = (matchCat && matchSearch) ? 'block' : 'none';
       });
     }
   </script>
