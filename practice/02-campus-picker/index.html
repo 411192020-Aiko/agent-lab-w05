@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>東華校園活動選擇器</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f5f5f5; }
+    .card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    button { padding: 8px 16px; background: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>東華校園活動選擇器 (Campus Activity Picker)</h1>
+  <p>選擇你感興趣的活動分類：</p>
+  <button onclick="filterActivity('all')">全部活動</button>
+  <button onclick="filterActivity('academic')">學術講座</button>
+  <button onclick="filterActivity('club')">社團表演</button>
+
+  <div id="activity-list" style="margin-top: 20px;">
+    <div class="card" data-category="academic"><h3>AI 探討工作坊</h3><p>地點：理工一館 / 時間：週三 14:00</p></div>
+    <div class="card" data-category="club"><h3>吉他社成發</h3><p>地點：集賢館 / 時間：週五 18:30</p></div>
+  </div>
+
+  <script>
+    function filterActivity(category) {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
